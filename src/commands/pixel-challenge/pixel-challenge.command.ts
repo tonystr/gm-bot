@@ -6,11 +6,12 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as util from 'util';
 
+let writeFileAsync = util.promisify(fs.writeFile);
 let existsAsync = util.promisify(fs.exists);
 let imgur = require('../../../modules/imgur');
 
 @Command({
-  matches: ['pixelchallenge'],
+  matches: ['pixelchallenge', 'logo'],
   ...prefixedCommandRuleTemplate,
   delete: false
 })
@@ -38,6 +39,9 @@ export class PixelChallengeCommand implements CommandClass {
 
     if (existingChallenges) {
       this.currentPixelChallenge = require(this.challengesDataPath);
+    } else {
+      await writeFileAsync(this.challengesDataPath, { entries: [] });
+      this.currentPixelChallenge = { entries: [] };
     }
   }
 
@@ -107,7 +111,7 @@ export class PixelChallengeCommand implements CommandClass {
       // List all entries
       if (args.length > 1 && args[1] === '-list') {
 
-        msg.author.send('Here are the current pixel challenge entries:').then(() => {
+        msg.author.send('Here are the current entries:').then(() => {
           if (this.currentPixelChallenge.entries.length > 0) {
             this.currentPixelChallenge.entries.forEach(entry => {
               msg.author.send(`**User:** ${entry.name}, **Message:** ${(entry.text || '(no text provided)')}, **Entry:** ${entry.link}`);
@@ -183,7 +187,7 @@ export class PixelChallengeCommand implements CommandClass {
         link: attachments[0].url
       });
 
-      msg.channel.send(`Challenge entry for ${msg.author} recorded.`);
+      msg.channel.send(`Contest entry for ${msg.author} recorded.`);
 
       this.asyncWriter(this.currentPixelChallenge);
     }
