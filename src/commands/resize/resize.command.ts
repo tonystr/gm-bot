@@ -87,7 +87,7 @@ export class ResizeCommand implements CommandClass {
    * @param image
    * @param scaleFactor
    * @param useBilinear
-   * @param errorHandler
+   * @param errorHandlertest
    * @param outputHandler
    */
   processGif(image, scaleFactor, useBilinear, errorHandler, outputHandler) {
