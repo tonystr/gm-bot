@@ -19,7 +19,8 @@ let spamTrackers: SpamTracker[] = [];
  * @returns Nothing, honestly
  */
 export function detectSpamMessage(msg: Message) {
-  if (msg.content.match(/naked|nude|photos/) && msg.content.match(/https?:\/\/\S+/i)) {
+  // Cover your eyes, children
+  if (msg.content.match(/(?:nude|dick|date|pussie)s?|sex|dating|pussy|cum|naked/) && msg.content.match(/https?:\/\/\S+/i)) {
     addOrUpdateSpamTracker(msg);
   }
 }
